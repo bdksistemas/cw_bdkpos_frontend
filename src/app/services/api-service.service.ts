@@ -73,19 +73,6 @@ export class ApiServiceService  {
     return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
   }
 
-  getReporteIngresos($fechaInicial:any =null, $fechaFinal:any =null, $sucursal: number = 1, tratamiento:any=null, empleado:any=null){
-    let url = 'rtickets/ingresos'
-    let data = {
-      'fecha_inicial': $fechaInicial,
-      'fecha_final': $fechaFinal,
-      'sucursal': $sucursal,
-      'tratamiento': tratamiento,
-      'empleado': empleado
-
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-
   getReporteVentasDetalle($fechaInicial:any =null, $fechaFinal:any =null, $sucursal: number = 1, $cajero: any = null, fp:any = null){
     let url = 'rtickets/obtenerRegistroVentasDetallado'
     let data = {
@@ -175,21 +162,6 @@ export class ApiServiceService  {
     }
     return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
   }
-  getCobroMembresias($fechaInicial:any =null, $fechaFinal:any =null, $sucursal: number = 1, tmovimiento: any = null, tsuscripcion: any = null){
-
-    //! 999 es igual a TODOS, para que no entre nignun filtro.
-
-    let url = 'rtickets/cobro-membresias'
-    let data = {
-      'fecha_inicial': $fechaInicial,
-      'fecha_final': $fechaFinal,
-      'sucursal': $sucursal,
-      'tmovimiento': tmovimiento,
-      'tsuscripcion': tsuscripcion,
-
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
   getSalidasAlmacen($fechaInicial:any =null, $fechaFinal:any =null, $sucursal: number = 1, $usuario: string = localStorage.getItem('id_usuario')!){
     let url = 'ralmacen/getSalidasAlmacen'
     let data = {
@@ -258,40 +230,6 @@ export class ApiServiceService  {
     return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
   }
 
-  getClases(sucursal:any){
-    let url = 'rsocios/getClases'
-    let data = {
-      'sucursal': sucursal,
-    }
-
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-
-  getHorarios(sucursal:any, clase:any){
-    let url = 'rsocios/getHorarios'
-    let data = {
-      'sucursal': sucursal,
-      'clase': clase
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-  getHorariosSocios(data:any){
-    let url = 'rsocios/getHorarios'
-
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-
-
-  getTipoSuscripcion(sucursal:any){
-
-    let url = 'general/getTipoSuscripcion'
-    let data = {
-      'sucursal': sucursal,
-    }
-
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-
   getCajeros(sucursal:any){
 
     let url = 'general/getCajeros'
@@ -303,43 +241,6 @@ export class ApiServiceService  {
   }
 
 
-
-  //Suscripciones vencidas:
-  getSuscripcionesVencidas($fechaInicial:any =null, $fechaFinal:any =null, $sucursal: number = 1, $usuario: string = localStorage.getItem('id_usuario')!){
-    let url = 'rtickets/suscripciones-vencidas'
-    let data = {
-      'fecha_inicial': $fechaInicial,
-      'fecha_final': $fechaFinal,
-      'id_usuario': $usuario,
-      'sucursal': $sucursal,
-
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-
-  getReporteSociosAsistencia($clase=0, $sucursal: number = 1, $fechaInicial:any =null, $fechaFinal:any =null,){
-    let url = 'rsocios/getAsistenciaSocios'
-    let data = {
-      'clase': $clase,
-      'sucursal': $sucursal,
-      'fecha_inicial': $fechaInicial,
-      'fecha_final': $fechaFinal,
-
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-
-  getReporteInscripciones($fechaInicial:any =null, $fechaFinal:any =null, $sucursal: number = 1, $usuario: string = localStorage.getItem('id_usuario')!){
-    let url = 'rsocios/getReporteInscripciones'
-    let data = {
-      'fecha_inicial': $fechaInicial,
-      'fecha_final': $fechaFinal,
-      'id_usuario': $usuario,
-      'sucursal': $sucursal,
-
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
 
   getListaSociosActivos($fechaInicial:any =null, $fechaFinal:any =null, $sucursal: number = 1, categoria:number =0){
     let url = 'rsocios/getListaSociosActivos'
@@ -367,12 +268,6 @@ export class ApiServiceService  {
 
 
 
-  obtenerBannerPublicitario(){
-   let url = 'https://www.apiweb.servidorbdk.com/tbbannerspub?select=idbanner,descripcion,banner,linkweb'
-    return this.http.get(`${url}`)
-  }
-
-
   getProveedores( $sucursal: number = 1, $usuario: string = localStorage.getItem('id_usuario')!){
 
     let url = 'general/getProveedores'
@@ -395,79 +290,10 @@ export class ApiServiceService  {
     return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
   }
 
-  getTratamientosSalas( $sucursal: number = 1, $usuario: string = localStorage.getItem('id_usuario')!){
-    let url = 'dashboard/tratamientosSalas'
-
-    let data = {
-      'id_usuario': $usuario,
-      'sucursal': $sucursal,
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-
-
-  getAgendaGeneral(fechaInicial:any = null, fechaFinal:any= null,sucursal:any = 1,  sala:any= null,usuario:any = null){
-    let url = 'rtickets/agendaGeneral'
-    let data = {
-      'sucursal': sucursal,
-      'fecha_inicial': fechaInicial,
-      'fecha_final': fechaFinal,
-      'sala': sala,
-      'id_usuario': usuario,
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-
-  }
-  //Agenda Por Sala:
-  getAgendaSala(sucursal:any = 1, fechaInicial:any = null, fechaFinal:any= null, sala:any= null,usuario:any = null){
-    let url = 'rtickets/agendaPorSala'
-    let data = {
-      'sucursal': sucursal,
-      'fecha_inicial': fechaInicial,
-      'fecha_final': fechaFinal,
-      'sala': sala,
-      'id_usuario': usuario,
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-
-  }
-
-  //Agenda por Empleado:
-  getAgendaEmpleado(sucursal:any = 1, fechaInicial:any = null, fechaFinal:any= null, sala:any= null,usuario:any = null){
-    let url = 'rtickets/agendaEmpleado'
-    let data = {
-      'sucursal': sucursal,
-      'fecha_inicial': fechaInicial,
-      'fecha_final': fechaFinal,
-      'empleado': usuario,
-      'id_usuario': usuario,
-      'sala': sala
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-
-  }
-
-  getTipoTratamiento(sucursal:any =1){
-    let url = 'general/getTipoTratamientos'
-    let data = {
-      'sucursal': sucursal,
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-
   getEstatus(sucursal:any =1){
     let url = 'general/getEstatus'
     let data = {
       'sucursal': sucursal,
-    }
-    return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
-  }
-
-  getSalas(sucursal:any =1, fechaInicial:any = null){
-    let url = 'general/obtenerSalas'
-    let data = {
-      'sucursal': sucursal,
-      'fecha_inicial': fechaInicial
     }
     return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions})
   }

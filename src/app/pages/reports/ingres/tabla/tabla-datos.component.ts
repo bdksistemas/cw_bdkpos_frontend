@@ -12,7 +12,6 @@ import { Toast } from 'primeng/toast';
 import { ToastrService } from 'ngx-toastr';
 import { Licencia } from '../../../../interfaces/Licencia';
 import { AuthService } from '../../../../auth/auth.service';
-import { BannerPublicitarioComponent } from '../../../../shared/banner-publicitario/banner-publicitario.component';
 
 export interface TicktData {
   ticket: number;

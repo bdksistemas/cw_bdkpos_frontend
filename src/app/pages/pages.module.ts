@@ -9,7 +9,6 @@ import { PrimengModule } from '../material/primeng.module';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { BarGraphComponent } from '../shared/bar-graph/bar-graph.component';
 
-import { BannerPublicitarioComponent } from '../shared/banner-publicitario/banner-publicitario.component';
 import { TablaDatosComponent } from './reports/ingres/tabla/tabla-datos.component';
 import { TituloPaginaComponent } from '../shared/titulo-pagina/titulo-pagina.component';
 
@@ -21,7 +20,6 @@ import { VentasDetalladoComponent } from './reports/ventas/ventas-detallado/vent
 import { VentasProductoComponent } from './reports/ventas/ventas-producto/ventas-producto.component';
 import { SalidasEfectivoComponent } from './reports/ingres/salidas-efectivo/salidas-efectivo.component';
 import { GastosGeneralComponent } from './reports/ingres/gastos-general/gastos-general.component';
-import { IngresosComponent } from './reports/ingres/ingresos/ingresos.component';
 //ALMACEN
 import { AlmacenSalidasComponent } from './reports/almacen/almacen-salidas/almacen-salidas.component';
 import { AlmacenEntradasComponent } from './reports/almacen/almacen-entradas/almacen-entradas.component';
@@ -39,7 +37,6 @@ import { SistemaApartadoComponent } from './reports/ventas/sistema-apartado/sist
 @NgModule({
   declarations: [
     PagesComponent,
-    BannerPublicitarioComponent,
     DashboardComponent,
     TablaDatosComponent,
     VentasCategoriaComponent,
@@ -49,7 +46,6 @@ import { SistemaApartadoComponent } from './reports/ventas/sistema-apartado/sist
     VentasProductoComponent,
     SalidasEfectivoComponent,
     GastosGeneralComponent,
-    IngresosComponent,
     AlmacenSalidasComponent,
     AlmacenEntradasComponent,
     AlmacenExistenciasComponent,

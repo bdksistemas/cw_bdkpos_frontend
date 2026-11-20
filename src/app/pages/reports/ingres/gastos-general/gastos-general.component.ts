@@ -78,7 +78,6 @@ export class GastosGeneralComponent {
     // this.getConceptos();
 
     this.getCajeros();
-    this.getTipoTratamiento();
 
     //Asignamos la fecha inicial y final a la fecha actual con el formato correcto
     const currentDate = new Date();
@@ -94,13 +93,6 @@ export class GastosGeneralComponent {
 
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    });
-  }
-
-  tipoTrataniento: any[] = [];
-  getTipoTratamiento() {
-    this.apiService.getTipoTratamiento(this.sucursal).subscribe((data: any) => {
-      this.tipoTrataniento = data.data;
     });
   }
   getTotalCost(columna: any) {

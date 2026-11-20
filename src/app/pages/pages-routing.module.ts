@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ToasterComponent } from './toaster/toaster.component';
 import { authGuard } from '../guards/auth.guard';
 import { GastosGeneralComponent } from './reports/ingres/gastos-general/gastos-general.component';
 import { autorizationGuard } from '../guards/autorization.guard';
@@ -16,7 +15,6 @@ import { VentasDetalladoComponent } from './reports/ventas/ventas-detallado/vent
 import { VentasCategoriaComponent } from './reports/ventas/ventas-categoria/ventas-categoria.component';
 import { VentasProductoComponent } from './reports/ventas/ventas-producto/ventas-producto.component';
 import { TablaDatosComponent } from './reports/ingres/tabla/tabla-datos.component';
-import { IngresosComponent } from './reports/ingres/ingresos/ingresos.component';
 import { ListadoSociosComponent } from './reports/socios/listado-socios/listado-socios.component';
 import { CotizacionesComponent } from './reports/ventas/cotizaciones/cotizaciones.component';
 import { SistemaApartadoComponent } from './reports/ventas/sistema-apartado/sistema-apartado.component';
@@ -38,12 +36,6 @@ const routes: Routes = [
       {
         path: 'reportes/tickets',
         component: TablaDatosComponent,
-        data: { animation: 'fadeIn' },
-        canActivate: [autorizationGuard]
-      },
-      {
-        path: 'reportes/ingresos',
-        component: IngresosComponent,
         data: { animation: 'fadeIn' },
         canActivate: [autorizationGuard]
       },
@@ -146,11 +138,6 @@ const routes: Routes = [
         data: { animation: 'fadeIn' },
         canActivate: [autorizationGuard]
 
-      },
-      {
-        path: 'toaster',
-        component: ToasterComponent,
-        data: { titulo: 'Toaster' },
       },
       { path: '', redirectTo: '/dashboard/Inicio', pathMatch: 'full' },
     ],
