@@ -9,8 +9,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ApiServiceService } from '../../../../services/api-service.service';
 import { ToastrService } from 'ngx-toastr';
-import { Licencia } from '../../../../interfaces/Licencia';
-import { AuthService } from '../../../../auth/auth.service';
+import { AuthService, sucursalInicial } from '../../../../auth/auth.service';
+import { alCambiarSucursal } from '../../../../services/sucursal.service';
 
 export interface TicktData {
   ticket: number;
@@ -66,7 +66,6 @@ export class AlmacenSalidasComponent {
   }
 
   ngOnInit() {
-    this.obtenerSucursales();
 
     //Asignamos la fecha inicial y final a la fecha actual con el formato correcto
     const currentDate = new Date();
@@ -157,7 +156,8 @@ export class AlmacenSalidasComponent {
   }
 
   //Variables para fecha inicial y fecha final
-  sucursal: number = 1;
+  sucursal: any = sucursalInicial();
+  private _alCambiarSucursal = alCambiarSucursal((s) => this.cambioSucusal(s));
   fechaInicial: string = '';
   fechaFinal: string = '';
   validarFechaInicial(event: any) {
@@ -238,19 +238,8 @@ export class AlmacenSalidasComponent {
   }
 
   //Obtener sucursales
-  sucursales: Licencia[] = [];
-  obtenerSucursales() {
-    //Verificamos si tenemos las sucursales dentro del authService
-    let sucursales = this.authService.getLicencias();
-    if (sucursales != null || sucursales != undefined) {
-      this.sucursales = sucursales;
-    } else {
-      //Si no los tenemos en el authService, los obtenemos del localStorage.
-      this.sucursales = this.authService.setLicencias();
-    }
-  }
-  cambioSucusal(event: any) {
-    this.sucursal = event.target.value;
+  cambioSucusal(valor: any) {
+      this.sucursal = Number(valor);
     this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal);
   }
 

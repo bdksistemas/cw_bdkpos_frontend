@@ -27,7 +27,6 @@ import { AlmacenExistenciasComponent } from './reports/almacen/almacen-existenci
 import { AlmacenOrdenesCompraComponent } from './reports/almacen/almacen-ordenes-compra/almacen-ordenes-compra.component';
 import { RouterModule } from '@angular/router';
 import { PagesComponent } from './pages.component';
-import { GenericTableComponent } from './reports/generic-table/generic-table.component';
 import { ListadoSociosComponent } from './reports/socios/listado-socios/listado-socios.component';
 import { CotizacionesComponent } from './reports/ventas/cotizaciones/cotizaciones.component';
 import { SistemaApartadoComponent } from './reports/ventas/sistema-apartado/sistema-apartado.component';
@@ -64,8 +63,7 @@ import { SistemaApartadoComponent } from './reports/ventas/sistema-apartado/sist
     PrimengModule,
     NgxUiLoaderModule,
     SharedModule,
-    BarGraphComponent,
-    GenericTableComponent
+    BarGraphComponent
 ]
 })
 export class PagesModule {
