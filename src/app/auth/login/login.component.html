@@ -23,7 +23,7 @@
                   </h4>
                 </div>
 
-                <form [formGroup]="loginForm">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                   <div class="flex text-center">
                     <p>Ingresa tus datos de cliente.</p>
                   </div>
@@ -45,6 +45,8 @@
                       matInput
                       placeholder="Ej. XXX25"
                       formControlName="idcw"
+                      name="idcw"
+                      autocomplete="off"
                       [ngClass]="{
                         'label-valid': loginForm.controls['idcw'].valid
                       }"
@@ -68,6 +70,8 @@
                       matInput
                       placeholder="Ej. user@bdksistemas.com"
                       formControlName="cwuser"
+                      name="username"
+                      autocomplete="username"
                       [ngClass]="{
                         'label-valid': loginForm.controls['cwuser'].valid
                       }"
@@ -91,11 +95,14 @@
                       matInput
                       placeholder="Ej. passw0rd3x4amp!eñ"
                       formControlName="cwpassword"
+                      name="password"
+                      autocomplete="current-password"
                       [ngClass]="{
                         'label-valid': loginForm.controls['cwpassword'].valid
                       }"
                     />
                     <button
+                      type="button"
                       mat-icon-button
                       matSuffix
                       (click)="hide = !hide"
@@ -108,14 +115,21 @@
                     </button>
                   </mat-form-field>
 
+                  <div class="form-check mb-3">
+                    <label>
+                      <input type="checkbox" class="form-check-input" formControlName="recordar" />
+                      <span class="form-check-label">Recordar ID y correo</span>
+                    </label>
+                  </div>
+
                   <div class="text-center pt-1 mb-5 pb-1">
                     <button
+                      type="submit"
                       id="btnLogin"
                       mat-flat-button
                       color="primary"
                       style="width: 250px"
                       class="p-4"
-                      (click)="onSubmit()"
                     >
                       Ingresar
                     </button>

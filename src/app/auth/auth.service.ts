@@ -15,6 +15,15 @@ import { environment } from '../../enviroments/enviroment';
 import { Licencia } from '../interfaces/Licencia';
 import jwt_decode, { jwtDecode } from 'jwt-decode'; // Importa la librería jwt-decode para decodificar tokens JWT
 
+// Sucursal con la que arrancan las pantallas: la primera licencia (la que muestra el selector), no un 1 fijo.
+export function sucursalInicial(): number {
+  try {
+    return Number(JSON.parse(localStorage.getItem('licencias') || '[]')[0]?.sucursal) || 1;
+  } catch {
+    return 1;
+  }
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -83,8 +92,8 @@ export class AuthService {
       }),
       // switchMap(() => this.getUserByToken()),
       catchError((err) => {
-        console.error('err', err);
-        return of(undefined);
+        // Devolvemos el mensaje del servidor (403 inactivo, 429 demasiados intentos, 401, 503) para mostrarlo.
+        return of({ error: err?.error?.error as string | undefined });
       }),
       finalize(() => this.isLoadingSubject.next(false))
     );
@@ -96,7 +105,9 @@ export class AuthService {
 
     //Limpiamos tambien la sesion:
     sessionStorage.clear();
+    const recordado = localStorage.getItem('cw_login_recordado'); // ID y correo recordados en el login
     localStorage.clear();
+    if (recordado) localStorage.setItem('cw_login_recordado', recordado);
 
     setTimeout(() => {
         window.location.reload();
@@ -145,12 +156,6 @@ export class AuthService {
       localStorage.setItem('software', auth.user.software);
       localStorage.setItem('nom_cw', auth.user.nom_cw);
 
-      //Variables para la base de datos.
-      sessionStorage.setItem('hosting', auth.user.hosting);
-      sessionStorage.setItem('bd_nombre', auth.user.bd_nombre);
-      sessionStorage.setItem('bd_user', auth.user.bd_user);
-      sessionStorage.setItem('bd_psw', auth.user.bd_psw);
-
       //Variables para la licencia. (Primero verificamos si existen licencias)
       if (auth.licencias) {
         //Recorremos las licencias para obtener los datos y los mostramos en consola.
@@ -187,11 +192,9 @@ export class AuthService {
     }
   }
 
-   ejLicencia: Licencia = [] as unknown as Licencia;
-
   //Regresamos las licencias.
   getLicencias() {
-    return this.licencias.length !== 0 ? this.licencias : this.setLicencias();
+    return this.licencias.length !== 0 ? this.licencias : undefined;
   }
   setLicencias(){
 
@@ -206,13 +209,12 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    debugger;
     const token = localStorage.getItem('token'); // Obtener el token almacenado localmente
     if (token) {
       try {
 
         const tokenPayload = jwtDecode(token)// Decodificar el token JWT
-        const now = Number(Date.now().valueOf() / 1000); // Obtener la fecha y hora actual en segundos
+        const now = Date.now().valueOf() / 1000; // Obtener la fecha y hora actual en segundos
 
         // Verificar si el token ha caducado
         if (tokenPayload.exp && tokenPayload.exp < now) {
