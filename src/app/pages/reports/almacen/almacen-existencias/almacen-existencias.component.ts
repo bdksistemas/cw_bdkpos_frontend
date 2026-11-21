@@ -37,7 +37,7 @@ export class AlmacenExistenciasComponent {
     'Importe'
   ];
 
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

@@ -34,7 +34,7 @@ export class VentasProductosCanceladosComponent {
   ];
   rowData: any;
 
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
