@@ -40,9 +40,9 @@
 
       <div class="form-floating buscador-ticket">
         <select (change)="cambioCajero($event)"  class="form-select box-shadow-rojo borde-rojo" id="floatingSelect2" aria-label="Floating label select example">
-          <option value="0">TODOS</option>
+          <option value="0" [selected]="!cajero">TODOS</option>
           @for (item of cajeros; track $index) {
-            <option value="{{item.idusuario}}">{{item.nombre}} </option>
+            <option value="{{item.idusuario}}" [selected]="cajero == item.idusuario">{{item.nombre}} </option>
           }
         </select>
         <label for="floatingSelect2">Selecciona Cajero</label>
@@ -50,15 +50,20 @@
 
       <div class="form-floating buscador-ticket">
         <select (change)="cambioFormaPago($event)"  class="form-select box-shadow-rojo borde-rojo" id="floatingSelect3" aria-label="Floating label select example">
-          <option value="0">TODOS</option>
+          <option value="0" [selected]="!formaPago">TODOS</option>
           @for (item of formasPago; track $index) {
-            <option value="{{item.fp}}">{{item.nomfp}} </option>
+            <option value="{{item.fp}}" [selected]="formaPago == item.fp">{{item.nomfp}} </option>
           }
         </select>
         <label for="floatingSelect3">Selecciona Forma de Pago</label>
       </div>
 
     </div>
+      <div class="">
+        <button (click)="aplicarFiltros()" mat-raised-button class="botones-acciones rojo">
+          APLICAR FILTROS <i class="fas fa-filter ml-3"></i>
+        </button>
+      </div>
     <table id="my-table" mat-table [dataSource]="dataSource" matSort >
 
       <!-- 'ID',

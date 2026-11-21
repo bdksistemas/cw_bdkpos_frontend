@@ -7,6 +7,9 @@ import * as xlsx from 'xlsx';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
+import { sumarColumna } from '../../../../shared/sumar-columna';
+import { rangoPorDefecto } from '../../../../shared/fechas';
 import { ApiServiceService } from '../../../../services/api-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService, sucursalInicial } from '../../../../auth/auth.service';
@@ -72,23 +75,11 @@ export class AlmacenEntradasComponent {
 
   ngOnInit() {
     this.getProveedores();
-
-
-    //Asignamos la fecha inicial y final a la fecha actual con el formato correcto
-    const currentDate = new Date();
-    this.fechaInicial = currentDate.toISOString().slice(0, 10);
-    this.fechaFinal = currentDate.toISOString().slice(0, 10);
-
-    //! Datos de la API
-    this.apiService.getEntradasAlmacen().subscribe((data: any) => {
-      this.MatPaginatorIntl.itemsPerPageLabel = 'Registros por página';
-      this.MatPaginatorIntl.nextPageLabel = 'Siguiente';
-      this.MatPaginatorIntl.previousPageLabel = 'Anterior';
-      this.dataSource = new MatTableDataSource(data.data);
-
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+    // Por defecto: del 1° del mes al día de hoy (fecha local, no UTC)
+    const r = rangoPorDefecto('mes');
+    this.fechaInicial = r.inicial;
+    this.fechaFinal = r.final;
+    this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal, false);
   }
 
 
@@ -105,20 +96,8 @@ export class AlmacenEntradasComponent {
     this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal);
   }
 
-  getTotalCost(columna: any) {
-    //Si existen elementos filtrados:
-    if (this.dataSource.filteredData.length > 0) {
-      let sumaTotal = 0;
-      this.dataSource.filteredData.forEach((row) => {
-        sumaTotal += row[columna];
-      });
-      return sumaTotal;
-    }
-    let sumaTotal = 0;
-    this.dataSource.data.forEach((row) => {
-      sumaTotal += row[columna];
-    });
-    return sumaTotal;
+  getTotalCost(columna: string) {
+    return sumarColumna(this.dataSource, columna);
   }
 
   ngAfterViewInit() {
@@ -184,29 +163,12 @@ export class AlmacenEntradasComponent {
   validarFechaInicial(event: any) {
     this.fechaInicial = event.value;
 
-    //Si las fechas son iguales, mostramos un mensaje de adventencia
-      if (this.fechaFinal == this.fechaInicial) {
-      // this.toast.warning('Selecciona fecha final para filtrar tabla.', 'Advertencia', {
-      //   positionClass: 'toast-bottom-center',
-      //   timeOut: 5000,
-      // });
-      // return;
-      this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal);
-
-    }
-
-    //Si la fecha final es mayor a la fecha inicial, APLICAMOS EL FILTRADO.
-    if (this.fechaFinal > this.fechaInicial) {
-      this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal);
-    }
-
     //Si la fecha inicial es mayor a la fecha final, mostramos un mensaje de error
     if (this.fechaInicial > this.fechaFinal) {
       this.toast.warning('La fecha FINAL no puede ser menor.', 'Advertencia', {
         positionClass: 'toast-bottom-center',
         timeOut: 5000,
       });
-      return;
     }
   }
   validarFechaFinal(event: any) {
@@ -230,12 +192,24 @@ export class AlmacenEntradasComponent {
       });
       return;
     }
+  }
 
+  //Los filtros solo guardan su valor; la consulta se hace al presionar "Aplicar filtros"
+  aplicarFiltros() {
+    if (!this.fechaInicial || !this.fechaFinal || this.fechaFinal < this.fechaInicial) {
+      this.toast.error('Revisa el rango de fechas.', 'Error', {
+        positionClass: 'toast-bottom-center',
+        timeOut: 5000,
+      });
+      return;
+    }
     this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal);
   }
 
-  traerDatosFiltradosAPI(fecjaInicial: string, fechaFinal: string) {
-    this.apiService
+  private consulta?: Subscription;
+  traerDatosFiltradosAPI(fecjaInicial: string, fechaFinal: string, avisar: boolean = true) {
+    this.consulta?.unsubscribe();
+    this.consulta = this.apiService
       .getEntradasAlmacen(fecjaInicial, fechaFinal, this.sucursal, this.provedor)
       .subscribe((data: any) => {
         this.MatPaginatorIntl.itemsPerPageLabel = 'Registros por página';
@@ -247,14 +221,16 @@ export class AlmacenEntradasComponent {
         this.dataSource.sort = this.sort;
 
         //Mostramos un toast en medio de la pantalla para indicar que se ha filtrado la tabla
-        this.toast.success('Se ha filtrado la tabla.', 'Filtrado', {
-          /// Mostramos en la parte inferior y en el centro
-          positionClass: 'toast-bottom-center',
-          // Tiempo de duración del toast
-          timeOut: 9000,
-          // Mostramos el botón de cerrar
-          closeButton: true,
-        });
+        if (avisar) {
+          this.toast.success('Se ha filtrado la tabla.', 'Filtrado', {
+            /// Mostramos en la parte inferior y en el centro
+            positionClass: 'toast-bottom-center',
+            // Tiempo de duración del toast
+            timeOut: 9000,
+            // Mostramos el botón de cerrar
+            closeButton: true,
+          });
+        }
       });
   }
 
@@ -263,8 +239,9 @@ export class AlmacenEntradasComponent {
   private _alCambiarSucursal = alCambiarSucursal((s) => this.cambioSucusal(s));
     cambioSucusal(valor: any) {
       this.sucursal = Number(valor);
+      this.provedor = 0;
       this.getProveedores();
-      this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal);
+      this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal, false);
     }
 
 }

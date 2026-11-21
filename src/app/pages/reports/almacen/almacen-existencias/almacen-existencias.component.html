@@ -20,14 +20,7 @@
         </button>
       </div>
 
-<!--
-      <div class="form-floating buscador-ticket">
-          <input type="date" class="form-control box-shadow-rojo borde-rojo"
-          [(ngModel)]="fechaInicial"
-          (change)="validarFechaInicial($event.target)"
-          >
-          <label for="floatingSelect">Fecha Inicial</label>
-      </div> -->
+<!-- -->
 
       <!-- <div class="form-floating buscador-ticket">
         <input type="date" class="form-control box-shadow-rojo borde-rojo  "
@@ -44,15 +37,20 @@
        <div class="form-floating buscador-ticket">
 
         <select (change)="cambioCategoria($event)" class="form-select box-shadow-rojo borde-rojo" id="floatingSelect" aria-label="Floating label select example">
-          <option value="0">TODAS LAS CATEGORÍAS</option>
+          <option value="0" [selected]="!categoria">TODAS LAS CATEGORÍAS</option>
           @for (item of categorias; track $index) {
-            <option value="{{item.categoria}}">{{item.nomcategoria}} </option>
+            <option value="{{item.categoria}}" [selected]="categoria == item.categoria">{{item.nomcategoria}} </option>
           }
         </select>
         <label for="floatingSelect">Selecciona Categoría</label>
       </div>
 
     </div>
+      <div class="">
+        <button (click)="aplicarFiltros()" mat-raised-button class="botones-acciones rojo">
+          APLICAR FILTROS <i class="fas fa-filter ml-3"></i>
+        </button>
+      </div>
     <table id="my-table" mat-table [dataSource]="dataSource" matSort >
 
 

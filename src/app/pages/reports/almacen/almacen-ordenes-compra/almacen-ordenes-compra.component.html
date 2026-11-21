@@ -39,9 +39,9 @@
     </div>
     <div class="form-floating buscador-ticket">
       <select (change)="cambioProvedor($event)"   class="form-select box-shadow-rojo borde-rojo" id="floatingSelect" aria-label="Floating label select example">
-        <option value="null">SELECCIONA UN PROVEDOR</option>
+        <option value="0" [selected]="!provedor">SELECCIONA UN PROVEDOR</option>
         @for (item of provedores; track $index) {
-          <option value="{{item.proveedor}}">{{item.nomproveedor}} </option>
+          <option value="{{item.proveedor}}" [selected]="provedor == item.proveedor">{{item.nomproveedor}} </option>
         }
 
       </select>
@@ -52,14 +52,19 @@
 
     <div class="form-floating buscador-ticket">
       <select (change)="cambioEstatus($event)"   class="form-select box-shadow-rojo borde-rojo" id="floatingSelect" aria-label="Floating label select example">
-        <option value="null">SELECCIONA UN ESTATUS</option>
+        <option value="0" [selected]="!estatusSeleccionado">SELECCIONA UN ESTATUS</option>
         @for (item of estatus; track $index) {
-          <option value="{{item.estatus}}">{{item.nomestatus}} </option>
+          <option value="{{item.estatus}}" [selected]="estatusSeleccionado == item.estatus">{{item.nomestatus}} </option>
         }
       </select>
       <label for="floatingSelect">ESTATUS</label>
 
     </div>
+      <div class="">
+        <button (click)="aplicarFiltros()" mat-raised-button class="botones-acciones rojo">
+          APLICAR FILTROS <i class="fas fa-filter ml-3"></i>
+        </button>
+      </div>
     <table id="my-table" mat-table [dataSource]="dataSource" matSort >
 
       <ng-container matColumnDef="IDOrden">

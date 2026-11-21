@@ -81,6 +81,8 @@ export class ApiServiceService  {
   getCotizaciones($fechaInicial:any =null, $fechaFinal:any =null, sucursal: number = 1, $categoria=0 ,$usuario: string = localStorage.getItem('id_usuario')!){
     let url = 'rtickets/getCotizaciones'
     let data = {
+      'fecha_inicial': $fechaInicial,
+      'fecha_final': $fechaFinal,
       'sucursal': sucursal,
     }
     return this.http.post(`${this.dominio}${url}`, data, {headers: this.httpOptions});

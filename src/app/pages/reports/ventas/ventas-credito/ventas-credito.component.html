@@ -21,24 +21,15 @@
       </div>
 
 
-      <div class="form-floating buscador-ticket">
-          <input type="date" class="form-control box-shadow-rojo borde-rojo"
-          [(ngModel)]="fechaInicial"
-          (change)="validarFechaInicial($event.target)"
-          >
-          <label for="floatingSelect">Fecha Inicial</label>
-      </div>
 
-      <div class="form-floating buscador-ticket">
-        <input type="date" class="form-control box-shadow-rojo borde-rojo  "
-        [(ngModel)]="fechaFinal"
-        (change)="validarFechaFinal($event.target)"
-        >
-        <label for="floatingSelect">Fecha Final</label>
-      </div>
 
 
     </div>
+      <div class="">
+        <button (click)="aplicarFiltros()" mat-raised-button class="botones-acciones rojo">
+          APLICAR FILTROS <i class="fas fa-filter ml-3"></i>
+        </button>
+      </div>
     <table id="my-table" mat-table [dataSource]="dataSource" matSort >
       displayedColumns: any[] = [
       'Ticket',
