@@ -15,8 +15,9 @@ import { VentasDetalladoComponent } from './reports/ventas/ventas-detallado/vent
 import { VentasCategoriaComponent } from './reports/ventas/ventas-categoria/ventas-categoria.component';
 import { VentasProductoComponent } from './reports/ventas/ventas-producto/ventas-producto.component';
 import { TablaDatosComponent } from './reports/ingres/tabla/tabla-datos.component';
-import { ListadoSociosComponent } from './reports/socios/listado-socios/listado-socios.component';
+import { ListaClientesComponent } from './reports/clientes/lista-clientes/lista-clientes.component';
 import { CotizacionesComponent } from './reports/ventas/cotizaciones/cotizaciones.component';
+import { VentasProductosCanceladosComponent } from './reports/ventas/ventas-productos-cancelados/ventas-productos-cancelados.component';
 import { SistemaApartadoComponent } from './reports/ventas/sistema-apartado/sistema-apartado.component';
 
 
@@ -79,6 +80,12 @@ const routes: Routes = [
         canActivate: [autorizationGuard]
       },
       {
+        path: 'ventas/productos-cancelados',
+        component: VentasProductosCanceladosComponent,
+        data: { animation: 'fadeIn' },
+        canActivate: [autorizationGuard]
+      },
+      {
         path: 'ventas/apartados',
         component: SistemaApartadoComponent,
         data: { animation: 'fadeIn'},
@@ -115,10 +122,10 @@ const routes: Routes = [
 
       },
 
-      //SOCIOS
+      //CLIENTES
       {
-        path: 'socios/socios-activos',
-        component: ListadoSociosComponent,
+        path: 'clientes/lista',
+        component: ListaClientesComponent,
         data: { animation: 'fadeIn' },
         canActivate: [autorizationGuard]
       },

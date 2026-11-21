@@ -1,28 +1,29 @@
 export interface Dashboard {
-  top10clientesAdeudo:        Top10clientesAdeudo[];
-  ventasDiariasUltimos10Dias: VentasDiariasUltimos10Dia[];
-  ventasPorMes:               VentasPorMe[];
-  datosIniciales:             DatosIniciales;
-  ventasPorCategorias:        VentasPorCategoria[];
-  topProductos:               TopProducto[];
+  datosIniciales:      DatosIniciales;
+  agrupacionVentas:    'hora' | 'dia' | 'mes';
+  serieVentas:         SerieVenta[];
+  ventasPorCategorias: VentasPorCategoria[];
+  topProductos:        TopProducto[];
+  top10clientesAdeudo: Top10clientesAdeudo[];
 }
 
 export interface DatosIniciales {
-  totalVentas:     number;
-  gastosYCompras:  number;
-  ingresosDiarios: number;
-  cotizaciones:    number;
+  totalVentas:    number;
+  gastosYCompras: number;
+  ingresos:       number;
+  cotizaciones:   number;
+}
+
+// etiqueta: "10:00" (hora), "2026-11-20" (día) o "Noviembre 2026" (mes)
+export interface SerieVenta {
+  etiqueta: string;
+  total:    number;
 }
 
 export interface TopProducto {
   producto:               number;
   nomproducto:            string;
   total_producto_vendido: number;
-}
-
-export interface VentasDiariasUltimos10Dia {
-  fecha: Date;
-  total: number | string;
 }
 
 export interface VentasPorCategoria {
@@ -32,13 +33,8 @@ export interface VentasPorCategoria {
   total_productos_vendido: number;
 }
 
-export interface VentasPorMe {
-  mes:   string;
-  total: number;
-}
-
 export interface Top10clientesAdeudo {
-  cliente: number;
+  cliente:     number;
   nomcliente:  string;
-  total_saldo:   number;
+  total_saldo: number;
 }

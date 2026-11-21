@@ -225,37 +225,4 @@ export class SalidasEfectivoComponent {
     this.cajero = event.target.value;
   }
 
-  // Generar datos de prueba para cada columna
-  testData: any[] = [];
-  dataPrueba() {
-    for (let i = 1; i <= 100; i++) {
-      const rowData: any = {};
-      this.displayedColumns.forEach((column) => {
-        switch (column) {
-          // case 'FechaHora':
-          //   rowData[column] = new Date().toLocaleString();
-          //   break;
-          case 'IDSalida':
-            rowData[column] = i;
-            break;
-          case 'FechaHora':
-            rowData[column] = new Date().toLocaleString();
-            break;
-          case 'Cajero':
-            rowData[column] = 'John Doe';
-            break;
-          case 'Motivo':
-            rowData[column] = 'Sample Reason';
-            break;
-          case 'ImporteTotal':
-            rowData[column] = 100.00;
-            break;
-          default:
-            rowData[column] = '';
-            break;
-        }
-      });
-      this.testData.push(rowData);
-    }
-  }
 }

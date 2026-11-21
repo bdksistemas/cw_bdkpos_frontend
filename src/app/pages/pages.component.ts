@@ -126,6 +126,7 @@ export class PagesComponent {
         { titulo: 'Registro de Ingresos', url: 'ventas/reporte-ingresos', icon: 'far fa-circle' },
         { titulo: 'Sistema de Separado', url: 'ventas/apartados', icon: 'far fa-circle' },
         { titulo: 'Cotizaciones', url: 'ventas/cotizaciones', icon: 'far fa-circle' },
+        { titulo: 'Productos Cancelados', url: 'ventas/productos-cancelados', icon: 'far fa-circle' },
 
 
       ]
@@ -143,7 +144,7 @@ export class PagesComponent {
       titulo: 'CLIENTES',
       icono: 'fas fa-warehouse',
       submenu: [
-        { titulo: 'Lista de Clientes', url: 'socios/socios-activos', icon: 'far fa-circle' },
+        { titulo: 'Lista de Clientes', url: 'clientes/lista', icon: 'far fa-circle' },
       ]
     },
     {

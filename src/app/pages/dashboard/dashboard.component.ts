@@ -1,25 +1,19 @@
-import {
-  Component,
-  ViewEncapsulation,
-  ChangeDetectorRef,
-  inject,
-  signal,
-  effect,
-} from '@angular/core';
-import { Chart } from 'chart.js';
+import { AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewEncapsulation, signal } from '@angular/core';
 import { ApiServiceService } from '../../services/api-service.service';
-import { Licencia } from '../../interfaces/Licencia';
-import { AuthService } from '../../auth/auth.service';
+import { sucursalInicial } from '../../auth/auth.service';
+import { alCambiarSucursal } from '../../services/sucursal.service';
 import {
   Dashboard,
   DatosIniciales,
+  SerieVenta,
   Top10clientesAdeudo,
   TopProducto,
-  VentasDiariasUltimos10Dia,
   VentasPorCategoria,
-  VentasPorMe,
 } from '../../interfaces/Dashboard';
-import { interval, Subject, switchMap, takeUntil } from 'rxjs';
+
+// jQuery y moment se cargan como scripts globales (angular.json); el selector de fechas es el plugin daterangepicker.
+declare const $: any;
+declare const moment: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -28,155 +22,123 @@ import { interval, Subject, switchMap, takeUntil } from 'rxjs';
   standalone: false,
   encapsulation: ViewEncapsulation.None, // Permite que los estilos de ANGULAR MATERIAL se apliquen correctamente DESDE NUESTRO CSS
 })
-export class DashboardComponent {
-  //Subjects
-  public salesDataSubject = new Subject<void>();
-  //create a signal to change sucursal
-  sucursal$ = signal(1);
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+  // Sucursal activa de la barra superior (nunca 1 fijo).
+  sucursal: any = sucursalInicial();
+  private _alCambiarSucursal = alCambiarSucursal((s) => this.cambioSucusal(s));
 
-  //Injects
-  private changeDetectorRef = inject(ChangeDetectorRef);
-  private apiService = inject(ApiServiceService);
-  private authService = inject(AuthService);
+  // Periodo de las tarjetas y gráficas que dependen de él (por defecto HOY).
+  fechaInicial: string = moment().format('YYYY-MM-DD');
+  fechaFinal: string = moment().format('YYYY-MM-DD');
+  etiquetaPeriodo: string = 'Hoy';
+  agrupacionVentas: string = 'hora';
 
-  //! Datos
-  public sucursales: Licencia[] = [];
   datosIniciales$ = signal<DatosIniciales | null>(null);
-  ventasPorMes$ = signal<VentasPorMe[]>([]);
-  ventasA10Dias$ = signal<VentasDiariasUltimos10Dia[]>([]);
+  serieVentas$ = signal<SerieVenta[]>([]);
   ventasCategoria$ = signal<VentasPorCategoria[]>([]);
   top10ProductsData$ = signal<TopProducto[]>([]);
   top10ClientesAdeudo$ = signal<Top10clientesAdeudo[]>([]);
 
-  constructor() {
-
-    // Intervalo para actualizar datos cada 5 segundos
-
-    interval(5000)
-      .pipe(
-        switchMap(() => this.apiService.getInitialData(this.sucursal$())),
-        takeUntil(this.salesDataSubject)
-      )
-      .subscribe((data) => {
-        this.setInitialData(data);
-      });
-
-    // Efecto para reaccionar al cambio de sucursal
-    effect(() => {
-      const sucursal = this.sucursal$();
-      this.getInitialData(sucursal);
-    });
-  }
-  ngOnDestroy() {
-    this.salesDataSubject.next();
-    this.salesDataSubject.complete();
-  }
+  constructor(private apiService: ApiServiceService, private zone: NgZone) {}
 
   ngOnInit(): void {
-    this.obtenerSucursales();
-
-    this.getInitialData(this.sucursal$());
-
+    this.getInitialData();
   }
 
-  getInitialData(sucursal: any) {
-    //Vaciamos todas las graficas para volver a cargarlas.
-    this.apiService.getInitialData(sucursal).subscribe((res: Dashboard) => {
-      this.setInitialData(res);
+  ngAfterViewInit(): void {
+    moment.locale('es');
+    const ayer = moment().subtract(1, 'days');
+    $('#rangoFechas').daterangepicker(
+      {
+        startDate: moment(),
+        endDate: moment(),
+        maxDate: moment(),
+        opens: 'left',
+        alwaysShowCalendars: true,
+        ranges: {
+          'Hoy': [moment(), moment()],
+          'Ayer': [ayer, ayer],
+          'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+          'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+          'Este mes': [moment().startOf('month'), moment()],
+          'El mes pasado': [moment().subtract(1, 'months').startOf('month'), moment().subtract(1, 'months').endOf('month')],
+        },
+        locale: {
+          format: 'DD/MM/YYYY',
+          separator: ' - ',
+          applyLabel: 'Actualizar',
+          cancelLabel: 'Cancelar',
+          customRangeLabel: 'Personalizado',
+          daysOfWeek: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+          monthNames: moment.months(),
+          firstDay: 1,
+        },
+      },
+      (inicio: any, fin: any, etiqueta: string) => {
+        // El plugin llama fuera de la zona de Angular.
+        this.zone.run(() => this.cambioFechas(inicio, fin, etiqueta));
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    $('#rangoFechas').data('daterangepicker')?.remove();
+  }
+
+  // Título de la gráfica de ventas según cómo agrupa el backend: 1 día = por hora, hasta 31 días = por día, más = por mes.
+  get tituloVentas(): string {
+    const titulos: any = { hora: 'VENTAS POR HORA', dia: 'VENTAS POR DÍA', mes: 'VENTAS POR MES' };
+    return titulos[this.agrupacionVentas] ?? 'VENTAS';
+  }
+
+  cambioFechas(inicio: any, fin: any, etiqueta: string) {
+    this.fechaInicial = inicio.format('YYYY-MM-DD');
+    this.fechaFinal = fin.format('YYYY-MM-DD');
+    this.etiquetaPeriodo =
+      etiqueta === 'Personalizado' ? inicio.format('DD/MM/YYYY') + ' - ' + fin.format('DD/MM/YYYY') : etiqueta;
+    this.getInitialData();
+  }
+
+  cambioSucusal(valor: any) {
+    this.sucursal = Number(valor);
+    this.getInitialData();
+  }
+
+  getInitialData() {
+    this.apiService.getInitialData(this.sucursal, this.fechaInicial, this.fechaFinal).subscribe((res: Dashboard) => {
+      this.datosIniciales$.set(res.datosIniciales);
+      this.agrupacionVentas = res.agrupacionVentas;
+      this.serieVentas$.set(res.serieVentas);
+      this.ventasCategoria$.set(res.ventasPorCategorias);
+      this.top10ProductsData$.set(res.topProductos);
+      this.top10ClientesAdeudo$.set(res.top10clientesAdeudo);
     });
   }
-  setInitialData(res: any) {
-    this.datosIniciales$.set(res.datosIniciales);
-    this.top10ProductsData$.set(res.topProductos);
-    this.ventasPorMes$.set(res.ventasPorMes);
-    this.ventasA10Dias$.set(res.ventasDiariasUltimos10Dias);
-    this.ventasCategoria$.set(res.ventasPorCategorias);
-    this.top10ClientesAdeudo$.set(res.top10clientesAdeudo);
+
+  // Procesadores de las gráficas (etiquetas y valores).
+  processSerieVentas = (data: SerieVenta[]) => ({
+    labels: data.map((item) => `${this.etiquetaSerie(item.etiqueta)}: ${this.moneda(item.total)}`),
+    data: data.map((item) => item.total),
+  });
+
+  processCategorySalesData = (data: VentasPorCategoria[]) => ({
+    labels: data.map((item) => `${item.nomcategoria} (${item.total_ventas})`),
+    data: data.map((item) => item.total_productos_vendido),
+  });
+
+  processSalesTop10Data = (data: TopProducto[]) => ({
+    labels: data.map((item) => `${item.nomproducto} (${item.total_producto_vendido})`),
+    data: data.map((item) => item.total_producto_vendido),
+  });
+
+  private moneda(valor: number) {
+    return valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
   }
 
-  salesData = [
-    { nomcategoria: 'Electrónica', cantidad: 15, total: 5000 },
-    { nomcategoria: 'Ropa', cantidad: 10, total: 3000 },
-    { nomcategoria: 'Alimentos', cantidad: 25, total: 7500 },
-  ];
-  processSalesData = (data: any[]) => {
-    const labels = data.map(
-      (item) => `${item.nomcategoria} (${item.cantidad})`
-    );
-    const values = data.map((item) => item.total);
-    return { labels, data: values };
-  };
-
-  processSalesForMonthData = (data: any[]) => {
-    const labels = data.map((item) => `${item.mes}: $${item.total}`);
-    const values = data.map((item) => item.total);
-    return { labels, data: values };
-  };
-
-  processDialySalesData = (data: any[]) => {
-    const labels = data.map((item) => `${this.dateBecomeToday(item.fecha) }: $${item.total}`);
-    const values = data.map((item) => item.total);
-    return { labels, data: values };
-  };
-
-  processCategorySalesData = (data: any[]) => {
-    const labels = data.map(
-      (item) => `${item.nomcategoria} (${item.total_ventas})`
-    );
-    const values = data.map((item) => item.total_ventas);
-    return { labels, data: values };
-  };
-
-  processSalesTop10Data = (data: any[]) => {
-    const labels = data.map(
-      (item) => `${item.nomproducto} (${item.total_producto_vendido})`
-    );
-    const values = data.map((item) => item.total_producto_vendido);
-    return { labels, data: values };
-  };
-
-  // optionsTop10Products = {
-  //   indexAxis: 'y',
-  //   elements: {
-  //     bar: {
-  //       borderWidth: 2,
-  //     },
-  //   },
-  //   responsive: true,
-  // };
-
-
-  optionCategorySales = {
-    cales: {
-      y: {
-        ticks: {
-          
-        }
-      }
-    }
-  }
-  toggleCollapse(cardId: string) {
-    const card = document.getElementById(cardId);
-    if (card) {
-      card.classList.toggle('collapsed');
-    }
-  }
-  //Obtener sucursales
-
-  obtenerSucursales() {
-    const sucursales = this.authService.getLicencias();
-    this.sucursales = sucursales || this.authService.setLicencias();
-  }
-
-  cambioSucursal(event: any) {
-    this.sucursal$.set(event.target.value);
-  }
-
-  dateBecomeToday(date: string) {
-    // Example: 2021-08-01 -> Lunes 1 de Agosto
-    const dateObject = new Date(date);
-    const options: Intl.DateTimeFormatOptions = { weekday: 'short', month: 'long', day: 'numeric' };
-    return dateObject.toLocaleDateString('es-MX', options);
-
+  // 'dia' llega como 2026-11-20 -> "vie, 20 de noviembre"; 'hora' y 'mes' ya llegan como texto.
+  private etiquetaSerie(etiqueta: string) {
+    if (this.agrupacionVentas !== 'dia') return etiqueta;
+    const [a, m, d] = etiqueta.split('-').map(Number);
+    return new Date(a, m - 1, d).toLocaleDateString('es-MX', { weekday: 'short', month: 'long', day: 'numeric' });
   }
 }

@@ -255,40 +255,4 @@ export class GastosGeneralComponent {
       this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal, false);
     }
 
-  // Generar datos de prueba para cada columna
-  testData: any[] = [];
-  dataPrueba() {
-    for (let i = 1; i <= 100; i++) {
-      const rowData: any = {};
-      this.displayedColumns.forEach((column) => {
-        switch (column) {
-          // case 'FechaHora':
-          //   rowData[column] = new Date().toLocaleString();
-          //   break;
-          case 'TipoGasto':
-            rowData[column] = `TipoGasto  ${i}`;
-            break;
-          case 'FechaHora':
-            rowData[column] = new Date().toLocaleString();
-            break;
-          case 'Provedor':
-            rowData[column] = `Provedor ${i}`;
-            break;
-          case 'Responsable':
-            rowData[column] = `Responsable ${i}`;
-            break;
-          case 'Motivo':
-            rowData[column] = `Motivo ${i}`;
-            break;
-          case 'ImporteTotal':
-            rowData[column] = i;
-            break;
-          default:
-            rowData[column] = '';
-            break;
-        }
-      });
-      this.testData.push(rowData);
-    }
-  }
 }

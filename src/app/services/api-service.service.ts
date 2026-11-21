@@ -24,15 +24,12 @@ export class ApiServiceService  {
   // Se conserva porque los métodos la llaman; el getter httpOptions ya arma los headers.
   setHeaders(){}
 
-  getInitialData($sucursal: number = 1, $usuario: string = localStorage.getItem('id_usuario')!){
-
-    this.setHeaders();
-
-    
+  getInitialData($sucursal: number, $fechaInicial: any = null, $fechaFinal: any = null){
     let url = 'dashboard/datosDashboard'
     let data = {
-      'id_usuario': $usuario,
-      'sucursal': $sucursal
+      'sucursal': $sucursal,
+      'fecha_inicial': $fechaInicial,
+      'fecha_final': $fechaFinal
     }
     return this.http.post<Dashboard>(`${this.dominio}${url}`, data, {headers: this.httpOptions})
 
@@ -223,8 +220,8 @@ export class ApiServiceService  {
 
 
 
-  getListaSociosActivos($fechaInicial:any =null, $fechaFinal:any =null, $sucursal: number = 1, categoria:number =0){
-    let url = 'rsocios/getListaSociosActivos'
+  getListaClientes($fechaInicial:any =null, $fechaFinal:any =null, $sucursal: number = 1, categoria:number =0){
+    let url = 'rclientes/getListaClientes'
     let data = {
       'fecha_inicial': $fechaInicial,
       'fecha_final': $fechaFinal,

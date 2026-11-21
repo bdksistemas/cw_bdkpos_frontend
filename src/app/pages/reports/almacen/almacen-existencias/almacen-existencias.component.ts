@@ -14,19 +14,6 @@ import { Toast, ToastrService } from 'ngx-toastr';
 import { AuthService, sucursalInicial } from '../../../../auth/auth.service';
 import { alCambiarSucursal } from '../../../../services/sucursal.service';
 
-export interface TicktData {
-  ticket: number;
-  fechaHora: string;
-  nombreCajero: string;
-  nombreMesero: string;
-  numeroMesa: number;
-  importeTotal: number;
-  propina: number;
-  pagoTotal: number;
-  cambios: number;
-  nombreCliente: string;
-  nombreRepartidor: string;
-}
 @Component({
   selector: 'app-almacen-existencias',
   templateUrl: './almacen-existencias.component.html',
@@ -68,8 +55,6 @@ export class AlmacenExistenciasComponent {
     this.MatPaginatorIntl.itemsPerPageLabel = 'Registros por página';
     this.MatPaginatorIntl.nextPageLabel = 'Siguiente';
     this.MatPaginatorIntl.previousPageLabel = 'Anterior';
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(this.testData);
   }
 
   ngOnInit() {
@@ -232,53 +217,4 @@ export class AlmacenExistenciasComponent {
       this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal, false);
     }
 
-  // Generar datos de prueba para cada columna
-  testData: any[] = [];
-  dataPrueba() {
-    for (let i = 1; i <= 100; i++) {
-      const rowData: any = {};
-      this.displayedColumns.forEach((column) => {
-        switch (column) {
-          // case 'FechaHora':
-          //   rowData[column] = new Date().toLocaleString();
-          //   break;
-          case 'NombreCategoria':
-            rowData[column] = `Categoria ${i}`;
-            break;
-          case 'NombreProducto':
-            rowData[column] = `Producto ${i}`;
-            break;
-          case 'TipoProducto':
-            rowData[column] = `Tipo Producto ${i}`;
-            break;
-          case 'Seccion':
-            rowData[column] = `Seccion ${i}`;
-            break;
-          case 'Existencia':
-            rowData[column] = i;
-            break;
-          case 'Costo':
-            rowData[column] = i;
-            break;
-          case 'Venta':
-            rowData[column] = i;
-            break;
-          case 'Importe':
-            rowData[column] = i;
-            break;
-          case 'MinimoRequerido':
-            rowData[column] = `MinimoRequerido ${i}`;
-            break;
-          case 'MaximoPermitido':
-            rowData[column] = `MaximoPermitido ${i}`;
-            break;
-
-          default:
-            rowData[column] = '';
-            break;
-        }
-      });
-      this.testData.push(rowData);
-    }
-  }
 }

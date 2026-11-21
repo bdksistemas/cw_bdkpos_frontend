@@ -1,442 +1,143 @@
+/* Diseño: DESIGN-SYSTEM-PORTABLE.md. Un solo acento; las cajas ya no llevan un color distinto cada una. */
 
-/**! Importante poner el height en 900 para que no se pierda el estilo en las pantallas */
+.container-all { display: block; height: 100% !important; overflow: auto !important; }
 
-.container-all{
-  display: block;
- height: 100% !important;
- overflow: auto !important;
- padding-left: 50px !important;
-  padding-right: 50px !important;
 
-}
-.carousel-item img {
-  width: 100%;
-  height: auto;
-}
-.container-charts{
-  width: 100%;
+/* ---------- Cajas de totales ---------- */
+.container-info-box {
   display: flex;
-  flex-direction: row;
-}
-.container-individual{
+  flex-wrap: wrap;
+  gap: 16px;
   width: 100%;
+  margin-bottom: 24px;
+  padding: 0;
+}
+.info-box {
+  flex: 1 1 200px;
+  min-width: 0;
+  width: auto !important;
+  min-height: 0;
+  margin: 0 !important;
+  padding: 16px !important;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 16px;
+  background: var(--white);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.info-box .info-box-icon {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--accent) !important;
+  color: #fff !important; /* AdminLTE pone texto oscuro en .bg-warning */
+  font-size: 20px;
+  box-shadow: none;
+}
+.info-box .info-box-icon i { color: #fff !important; }
+.info-box-content { flex: 1; min-width: 0; color: var(--ink); padding: 0; margin: 0 !important; }
+.info-box .info-box-text {
+  display: block;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.info-box-number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
 }
 
-.card{
-  width: 800px !important;
+/* ---------- Gráficas ---------- */
+.container-charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+  margin-bottom: 24px;
+  padding: 0;
+}
+.container-charts > .card {
+  flex: 1 1 420px;
+  min-width: 0;
+  width: auto !important;
   height: 400px !important;
-  margin: 50px;
-
-  /* box-shadow: 0px 3px 30px -3px rgba(0,0,0,0.75);
-  -webkit-box-shadow: 0px 3px 30px -3px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 3px 30px -3px rgba(0,0,0,0.75); */
+  margin: 0 !important;
 }
-.card-individual{
-  width: 99% !important;
-  margin: 50px !important;
-  /* margin-left: 110px !important; */
+.card-header {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  padding: 16px 20px !important;
+  color: var(--ink) !important;
+  background-color: var(--white) !important;
+  border-bottom: 1px solid var(--line);
+  border-radius: 12px 12px 0 0;
 }
-.card-header{
+.card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.card-body {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  color: #a30909 !important;
-
-  padding: 10px !important;
-  background-color: white !important;
-
+  min-height: 0;
+  padding: 16px;
+  overflow: auto;
 }
-.card-title{
-  text-shadow: #a30909;
-  font-size: 22px !important;
-  font-weight: bold !important;
-  text-shadow: -1px 4px 13px rgba(0,0,0,0.29);
-}
+.canvas-chart { width: 100% !important; height: 100% !important; }
+.chart-canvas { width: 100% !important; height: 100% !important; }
 
-.canvas-chart{
-  width: 100% !important;
-  height: 100% !important;
-}
-
-.card-body{
-  display: flex !important;
-  justify-content: center !important;
-  align-items: start !important;
-
-}
-.chart-canvas{
-  width: 300px !important; height: auto !important;
-}
-.container-info-box{
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: auto !important;
-  padding-right: auto ;
-}
-.info-box{
-  width: 18% !important;
-  margin: 20px 10px 20px 10px !important;
-  padding: 15px !important;
-}
-
-.ventasMesero{
-  width: 100%;
-  justify-content: center;
-  margin-bottom: 100px;
-}
-.ventasMesero .card{
-  width: 1500px !important;
-  height: 600px !important;
-}
-table {
-  width: 100%;
-  table-layout: fixed; /* Asegura que las columnas tengan un ancho fijo */
-}
-
-thead, tbody, tr, td, th {
-  width: 100%;
-  text-align: left; /* Ajusta el alineamiento del texto */
-  vertical-align: middle; /* Centra verticalmente el contenido */
-}
-
-th, td {
-  word-wrap: break-word; /* Permite que el texto largo se ajuste */
-  white-space: nowrap; /* Evita que el texto se desborde */
-  overflow: hidden; /* Esconde el desbordamiento del contenido */
-}
-
-.card-body {
-  display: block;
-  width: 100%;
-  overflow-x: auto; /* Habilita el scroll horizontal si es necesario */
-  overflow-y: auto; /* Habilita el scroll vertical si es necesario */
-  height: auto; /* Permite que la tabla se ajuste al contenido */
-}
-
-/* tbody, td, tfoot, th, thead {
-  width: 100% !important;
-}
-tr,td{
-  width: 50% !important;
-
-} */
-@media (max-width: 1024px) {
-  .container-info-box{
-    flex-wrap: wrap;
-  }
-  /* .info-box{
-    width: 100% !important;
-    margin: 10px 10px 10px 10px !important;
-  } */
-
-
-}
-
-
-
-/*? Media querys para los telefonos */
-@media (max-width: 768px) {
-  .container-all{
-    padding: 10px !important;
-  }
-  .container-charts{
-    padding: 10px;
-  }
-  .container-individual{
-    padding: 20px;
-  }
-  .card{
-    width: 100% !important; height: 100% !important;
-    margin: 20px !important;
-    box-shadow: 0px 3px 30px -3px rgba(0,0,0,0.75);
-    -webkit-box-shadow: 0px 3px 30px -3px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 3px 30px -3px rgba(0,0,0,0.75);
-  }
-  .card-title{
-    text-shadow: #a30909;
-    font-size: 16px !important;
-    font-weight: bold !important;
-    text-shadow: -1px 4px 13px rgba(0,0,0,0.29);
-  }
-
-  .container-charts{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-  }
-  .container-info-box{
-    margin-top: 20px !important;
-    padding-left: 10px !important;
-    padding-right: 10px;
-    flex-direction: column-reverse;
-  }
-  .info-box{
-    width: 100% !important;
-    margin: 10px 10px 10px 10px !important;
-    /* margin: 0px !important; */
-
-  }
-
-  .ventasMesero .card{
-    width: 100% !important;
-    height: auto !important;
-  }
-}
-
-
-
-/* ESTILOS NUEVOS PARA EL DASHBOARD */
-.info-box-content{
-  color: white;
-  font-weight: bold;
- }
-
-.info-box-ventas{
-  background-color: #17a3b8;
-  color: white;
-}
-
-.info-box-gastos{
-  background-color: #dc3545 !important;
-  color: white;
-}
-.info-box-membresias{
-  background-color: #28a745 !important;
-  color: white;
-
-}
-.info-box-inscripciones{
-  background-color: #ffc107 !important;
-  color: white;
-}
-.info-box-sucursales{
-  background-color: #007bff !important;
-  color: white;
-}
-
-.info-box-footer {
-  padding: 10px;
-  background-color: #f1f1f1;
-  border-top: 1px solid #ddd;
-  text-align: center;
-}
-
-.info-box-footer .footer-text {
-  font-size: 14px;
-  color: #333;
-}
-
-
-/* Cambios en el header de las cards */
-.card-header{
-  display: flex !important;
-  justify-content: start !important;
-  align-items: start !important;
-  color: white !important;
-  padding: 15px !important;
-  background-color: #171718 !important;
-}
-.card-header-rojo{
-  background-color: rgb(224, 22, 22) !important;
-}
-.card-header-verde{
-  background-color: rgb(40, 167, 69) !important;
-}
-.card-header-azul{
-  background-color: rgb(0, 123, 255) !important;
-}
-.card-header-amarillo{
-  background-color: #ffc107 !important;
-}
-.card-header-naranja{
-  background-color: rgb(236, 110, 6) !important;
-}
-.card-header-morado{
-  background-color: #5f1bdf !important;
-}
-.card-header-rosa{
-  background-color: rgba(255, 99, 132, 1) !important;
-}
-.card-header-amarillo-claro{
-  background-color: #eeff00 !important;
-}
-.card-title{
-  text-shadow: #a30909;
-  font-size: 18px !important;
-  font-weight: bold !important;
-  text-shadow: -1px 4px 13px rgba(0,0,0,0.29);
-  margin-left: 10px;
-}
-
-
-
-/*? Media querys para los telefonos */
 @media (max-width: 700px) {
-
-  .container-all{
-    padding: 10px !important;
-  }
-  .container-charts{
-    padding: 10px;
-  }
-  .card{
-    width: 100% !important;
-    height: 400px !important;
-    margin: 10px !important;
-  }
-  .card-title{
-    text-shadow: #a30909;
-    font-size: 16px !important;
-    font-weight: bold !important;
-    text-shadow: -1px 4px 13px rgba(0,0,0,0.29);
-  }
-
-  .container-charts{
-    width: 100% !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .container-info-box{
-    margin-top: 20px !important;
-    /* padding-left: 10px !important; */
-    padding-right: 10px;
-    flex-direction: column-reverse;
-  }
-  .pares{
-    flex-direction: column;
-
-  }
-  .info-box{
-    width: 98% !important;
-    margin: 10px 10px 10px 10px !important;
-
-  }
-
-  .ventasMesero .card{
-    width: 700px !important;
-    height: auto !important;
-  }
-  .generic-graph{
-    width: 100% !important;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-  }
+  .container-all { padding: 12px !important; }
+  .container-charts > .card { flex-basis: 100%; height: 400px !important; }
+  .card-title { font-size: 17px !important; }
+  .info-box-number { font-size: 24px; }
 }
 
-
-/* Mediaquery para IPAD 820x1180 */
-@media (max-width: 1100px)  {
-
-  .container-charts{
-    /* width: 100%; */
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-
-  }
-  .pares{
-    width: 100% !important;
-    display: flex !important;
-
-  }
-  .container-info-box{
-    width: 100% !important;
-    flex-wrap: wrap;
-    padding: 25px !important;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-  }
-
-
-  .ventasMesero{
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 100px;
-  }
-  .ventasMesero .card{
-    width: 700px !important;
-    height: 600px !important;
-  }
-
-
+/* Selector de periodo (plugin daterangepicker, se pinta en <body>; este componente no encapsula estilos) */
+.btn-periodo {
+  width: 100%;
+  padding: 6px 10px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
 }
-@media (max-width: 1240px)  {
-  .pares{
-    width: 100% !important;
-    display: flex !important;
-
-  }
-  .container-info-box{
-    width: 100% !important;
-    flex-wrap: wrap;
-    padding: 25px !important;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-  }
-  /* .info-box{
-    width: 100% !important;
-  } */
-
-}
+.btn-periodo:hover { border-color: var(--muted); }
+.daterangepicker { font-family: var(--font-body); border-color: var(--line); }
+.daterangepicker .ranges li.active,
+.daterangepicker td.active,
+.daterangepicker td.active:hover { background-color: var(--accent); }
+.daterangepicker td.in-range { background-color: rgba(163, 9, 9, 0.08); }
+.daterangepicker .drp-buttons .btn-success { background: var(--accent); border-color: var(--accent); }
+.daterangepicker .drp-buttons .btn-success:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
 
 
-@media (max-width: 400px)  {
- 
-  .card{
-    width: 300px !important;
-  }
-
-  .ventasMesero .card{
-    width: 100% !important;
-    height: auto !important;
-  }
-  .info-box{
-    width: 100% !important;
-    /* margin: 10px 10px 10px 10px !important; */
-    margin: 0px !important;
-
-  }
-}
-@media (max-width: 768px)  {
-  .canvas-chart{
-
-    height: auto !important;
-  }
-  .ventasMesero .card{
-    width: 100% !important;
-    height: auto !important;
-  }
-  .generic-graph{
-    width: 100% !important;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-  }
-
-}
-.legend-container {
-  max-height: 450px; /* Ajusta el valor según lo necesites */
-  overflow-y: auto;
-}
-
-.generic-graph{
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-}
+/* ---------- Cuentas abiertas: una tarjeta por cuenta ---------- */
+.cuentas-vacio { margin: 0; color: var(--muted); font-size: 14px; }

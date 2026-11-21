@@ -15,19 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService, sucursalInicial } from '../../../../auth/auth.service';
 import { alCambiarSucursal } from '../../../../services/sucursal.service';
 
-export interface TicktData {
-  ticket: number;
-  fechaHora: string;
-  nombreCajero: string;
-  nombreMesero: string;
-  numeroMesa: number;
-  importeTotal: number;
-  propina: number;
-  pagoTotal: number;
-  cambios: number;
-  nombreCliente: string;
-  nombreRepartidor: string;
-}
 @Component({
   selector: 'app-almacen-salidas',
   templateUrl: './almacen-salidas.component.html',
@@ -220,40 +207,4 @@ export class AlmacenSalidasComponent {
       this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal, false);
     }
 
-  // Generar datos de prueba para cada columna
-  testData: any[] = [];
-  dataPrueba() {
-    for (let i = 1; i <= 100; i++) {
-      const rowData: any = {};
-      this.displayedColumns.forEach((column) => {
-        switch (column) {
-          // case 'FechaHora':
-          //   rowData[column] = new Date().toLocaleString();
-          //   break;
-          case 'IDEntrada':
-            rowData[column] = `ID  ${i}`;
-            break;
-          case 'Fecha':
-            rowData[column] = new Date().toLocaleString();
-            break;
-          case 'MotivoSalida':
-            rowData[column] = `Motivo Salida ${i}`;
-            break;
-          case 'Responsable':
-            rowData[column] = `Responsable ${i}`;
-            break;
-          case 'Observaciones':
-            rowData[column] = `Observaciones ${i}`;
-            break;
-          case 'ImporteTotal':
-            rowData[column] = i;
-            break;
-          default:
-            rowData[column] = '';
-            break;
-        }
-      });
-      this.testData.push(rowData);
-    }
-  }
 }

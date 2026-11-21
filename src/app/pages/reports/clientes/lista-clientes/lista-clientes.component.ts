@@ -15,12 +15,12 @@ import { Toast, ToastrService } from 'ngx-toastr';
 import { AuthService, sucursalInicial } from '../../../../auth/auth.service';
 import { alCambiarSucursal } from '../../../../services/sucursal.service';
 @Component({
-  selector: 'app-listado-socios',
+  selector: 'app-lista-clientes',
   standalone: false,
-  templateUrl: './listado-socios.component.html',
-  styleUrl: './listado-socios.component.css',
+  templateUrl: './lista-clientes.component.html',
+  styleUrl: './lista-clientes.component.css',
 })
-export class ListadoSociosComponent{
+export class ListaClientesComponent{
 
   titulo: string = 'Reporte Listado de Clientes';
 
@@ -55,8 +55,6 @@ export class ListadoSociosComponent{
     this.MatPaginatorIntl.itemsPerPageLabel = 'Registros por página';
     this.MatPaginatorIntl.nextPageLabel = 'Siguiente';
     this.MatPaginatorIntl.previousPageLabel = 'Anterior';
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(this.testData);
   }
 
   ngOnInit() {
@@ -171,7 +169,7 @@ export class ListadoSociosComponent{
   traerDatosFiltradosAPI(fecjaInicial: string, fechaFinal: string, avisar: boolean = true) {
     this.consulta?.unsubscribe();
     this.consulta = this.apiService
-      .getListaSociosActivos(fecjaInicial, fechaFinal, this.sucursal, this.categoria)
+      .getListaClientes(fecjaInicial, fechaFinal, this.sucursal, this.categoria)
       .subscribe((data: any) => {
 
         //Mandamos llamar nuevamente las categorias, si es que esa sucursal tiene otras.
@@ -204,54 +202,5 @@ export class ListadoSociosComponent{
       this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal, false);
     }
 
-  // Generar datos de prueba para cada columna
-  testData: any[] = [];
-  dataPrueba() {
-    for (let i = 1; i <= 100; i++) {
-      const rowData: any = {};
-      this.displayedColumns.forEach((column) => {
-        switch (column) {
-          // case 'FechaHora':
-          //   rowData[column] = new Date().toLocaleString();
-          //   break;
-          case 'NombreCategoria':
-            rowData[column] = `Categoria ${i}`;
-            break;
-          case 'NombreProducto':
-            rowData[column] = `Producto ${i}`;
-            break;
-          case 'TipoProducto':
-            rowData[column] = `Tipo Producto ${i}`;
-            break;
-          case 'Seccion':
-            rowData[column] = `Seccion ${i}`;
-            break;
-          case 'Existencia':
-            rowData[column] = i;
-            break;
-          case 'Costo':
-            rowData[column] = i;
-            break;
-          case 'Venta':
-            rowData[column] = i;
-            break;
-          case 'Importe':
-            rowData[column] = i;
-            break;
-          case 'MinimoRequerido':
-            rowData[column] = `MinimoRequerido ${i}`;
-            break;
-          case 'MaximoPermitido':
-            rowData[column] = `MaximoPermitido ${i}`;
-            break;
-
-          default:
-            rowData[column] = '';
-            break;
-        }
-      });
-      this.testData.push(rowData);
-    }
-  }
 
 }

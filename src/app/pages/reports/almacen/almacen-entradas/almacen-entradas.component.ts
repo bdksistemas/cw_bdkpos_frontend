@@ -15,19 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService, sucursalInicial } from '../../../../auth/auth.service';
 import { alCambiarSucursal } from '../../../../services/sucursal.service';
 
-export interface TicktData {
-  ticket: number;
-  fechaHora: string;
-  nombreCajero: string;
-  nombreMesero: string;
-  numeroMesa: number;
-  importeTotal: number;
-  propina: number;
-  pagoTotal: number;
-  cambios: number;
-  nombreCliente: string;
-  nombreRepartidor: string;
-}
 @Component({
   selector: 'app-almacen-entradas',
   templateUrl: './almacen-entradas.component.html',

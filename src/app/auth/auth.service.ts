@@ -80,7 +80,6 @@ export class AuthService {
 
     // let url = this.dominio + '/auth/login';
      let url = environment.DOMINIO_API_LOGIN;
-    // let url = 'http://127.0.0.1:8000/api/auth/login'
 
     // let data = {
     //   email: email,

@@ -15,19 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService, sucursalInicial } from '../../../../auth/auth.service';
 import { alCambiarSucursal } from '../../../../services/sucursal.service';
 
-export interface TicktData {
-  ticket: number;
-  fechaHora: string;
-  nombreCajero: string;
-  nombreMesero: string;
-  numeroMesa: number;
-  importeTotal: number;
-  propina: number;
-  pagoTotal: number;
-  cambios: number;
-  nombreCliente: string;
-  nombreRepartidor: string;
-}
 @Component({
   selector: 'app-ventas-producto',
   templateUrl: './ventas-producto.component.html',
@@ -234,60 +221,4 @@ export class VentasProductoComponent {
       this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal, false);
     }
 
-  // Generar datos de prueba para cada columna
-  testData: any[] = [];
-  dataPrueba() {
-    for (let i = 1; i <= 100; i++) {
-      const rowData: any = {};
-      this.displayedColumns.forEach((column) => {
-        switch (column) {
-          case 'NombreProducto':
-            rowData[column] = `Producto ${i}`;
-            break;
-          case 'CantidadVendida':
-            rowData[column] = i;
-            break;
-          case 'ImporteTotal':
-            rowData[column] = i;
-            break;
-          case 'Ganancia':
-            rowData[column] = i;
-            break;
-
-          // case 'FechaHora':
-          //   rowData[column] = new Date().toLocaleString();
-          //   break;
-          // case 'NombreCajero':
-          //   rowData[column] = `Cajero ${i}`;
-          //   break;
-          // case 'NombreMesero':
-          //   rowData[column] = `Mesero ${i}`;
-          //   break;
-
-          // case 'ImporteTotal':
-          //   rowData[column] = Number(Math.floor(Math.random() * 1000) + 1);
-          //   break;
-          // case 'Propina':
-          //   rowData[column] = Math.floor(Math.random() * 100) + 1;
-          //   break;
-          // case 'PagoTotal':
-          //   rowData[column] = rowData['ImporteTotal'] + rowData['Propina'];
-          //   break;
-          // case 'Cambios':
-          //   rowData[column] = Math.floor(Math.random() * 100) + 1;
-          //   break;
-          // case 'NombreCliente':
-          //   rowData[column] = `Cliente ${i}`;
-          //   break;
-          // case 'NombreRepartidor':
-          //   rowData[column] = `Repartidor ${i}`;
-          //   break;
-          default:
-            rowData[column] = '';
-            break;
-        }
-      });
-      this.testData.push(rowData);
-    }
-  }
 }

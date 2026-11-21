@@ -15,19 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService, sucursalInicial } from '../../../../auth/auth.service';
 import { alCambiarSucursal } from '../../../../services/sucursal.service';
 
-export interface TicktData {
-  ticket: number;
-  fechaHora: string;
-  nombreCajero: string;
-  nombreMesero: string;
-  numeroMesa: number;
-  importeTotal: number;
-  propina: number;
-  pagoTotal: number;
-  cambios: number;
-  nombreCliente: string;
-  nombreRepartidor: string;
-}
 @Component({
   selector: 'app-ventas-productos-cancelados',
   templateUrl: './ventas-productos-cancelados.component.html',
@@ -66,7 +53,6 @@ export class VentasProductosCanceladosComponent {
     this.MatPaginatorIntl.previousPageLabel = 'Anterior';
     // this.dataPrueba();
     // // Assign the data to the data source for the table to render
-     this.dataSource = new MatTableDataSource(this.testData);
   }
 
   ngOnInit() {
@@ -220,58 +206,4 @@ export class VentasProductosCanceladosComponent {
       this.traerDatosFiltradosAPI(this.fechaInicial, this.fechaFinal, false);
     }
 
-  // Generar datos de prueba para cada columna
-  testData: any[] = [];
-  dataPrueba() {
-    for (let i = 1; i <= 100; i++) {
-      const rowData: any = {};
-      this.displayedColumns.forEach((column) => {
-        switch (column) {
-          case 'FechaHora':
-            rowData[column] = new Date().toLocaleString();
-            break;
-          case 'NombreProducto':
-            rowData[column] = `Producto ${i}`;
-            break;
-          case 'Cantidad':
-            rowData[column] = i;
-            break;
-          case 'Importe':
-            rowData[column] = i;
-            break;
-          case 'Cajero':
-            rowData[column] = `Cajero ${i}`;
-            break;
-          case 'AutorizadorPor':
-            rowData[column] = `Autorizador ${i}`;
-            break;
-          case 'Mesa':
-            rowData[column] = `Mesa ${i}`;
-            break;
-          case 'Mesero':
-            rowData[column] = `Mesero ${i}`;
-            break;
-          case 'Motivo':
-            rowData[column] = `Motivo ${i}`;
-            break;
-          case 'Origen':
-            rowData[column] = `Origen ${i}`;
-            break;
-          case 'IDOrigen':
-            rowData[column] = i;
-            break;
-          case 'Reset':
-            rowData[column] = i % 2 === 0 ? 'Sí' : 'No';
-            break;
-          case 'Impresora':
-            rowData[column] = `Impresora ${i}`;
-            break;
-          default:
-            rowData[column] = '';
-            break;
-        }
-      });
-      this.testData.push(rowData);
-    }
-  }
 }
