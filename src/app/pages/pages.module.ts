@@ -8,6 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { PrimengModule } from '../material/primeng.module';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { BarGraphComponent } from '../shared/bar-graph/bar-graph.component';
+import { DonutGraphComponent } from '../shared/donut-graph/donut-graph.component';
+import { CuentasClientesComponent } from '../shared/cuentas-clientes/cuentas-clientes.component';
 
 import { TablaDatosComponent } from './reports/ingres/tabla/tabla-datos.component';
 import { TituloPaginaComponent } from '../shared/titulo-pagina/titulo-pagina.component';
@@ -63,7 +65,9 @@ import { SistemaApartadoComponent } from './reports/ventas/sistema-apartado/sist
     PrimengModule,
     NgxUiLoaderModule,
     SharedModule,
-    BarGraphComponent
+    BarGraphComponent,
+    DonutGraphComponent,
+    CuentasClientesComponent
 ]
 })
 export class PagesModule {

@@ -1,0 +1,62 @@
+<section class="cc-panel">
+  <header class="cc-header">
+    <h3 class="cc-title">{{ titulo }}</h3>
+    @if (total > 0) {
+      <a class="cc-ver-todos" [routerLink]="rutaReporte">Ver todos ({{ total }})</a>
+    }
+  </header>
+
+  <div class="cc-body">
+    @if (clientes.length) {
+      <div class="cc-grid">
+        @for (item of clientes; track item.cliente) {
+          <article class="cc-card">
+            <header class="cc-card-head">
+              <div class="cc-nombre">
+                <strong>{{ item.nomcliente || 'Sin nombre' }}</strong>
+                <small>Cliente {{ item.cliente }}</small>
+              </div>
+              @if (vencido(item)) {
+                <span class="cc-vencido">{{ etiquetaVencido }}</span>
+              }
+            </header>
+
+            <div class="cc-saldo">
+              <span>Saldo</span>
+              <strong>{{ item.total_saldo | currency }}</strong>
+            </div>
+            <div class="cc-barra" aria-hidden="true">
+              <div [style.width.%]="porcentajeAbonado(item)"></div>
+            </div>
+            <div class="cc-abonado">
+              Abonado {{ item.total_vendido - item.total_saldo | currency }} de {{ item.total_vendido | currency }}
+            </div>
+
+            <div class="cc-contacto">
+              @if (item.tel1) {
+                <a [href]="'tel:' + item.tel1"><i class="fas fa-phone"></i> Teléfono: {{ item.tel1 }}</a>
+              }
+              @if (item.tel2) {
+                <a [href]="'tel:' + item.tel2"><i class="fas fa-mobile-alt"></i> Celular: {{ item.tel2 }}</a>
+              }
+              @if (!item.tel1 && !item.tel2) {
+                <span class="cc-sin-tel">Sin teléfono registrado</span>
+              }
+            </div>
+
+            <dl class="cc-meta">
+              <div><dt>{{ item.cuentas === 1 ? etiquetaCuenta : etiquetaCuentas }}</dt><dd>{{ item.cuentas }}</dd></div>
+              <div><dt>Desde</dt><dd>{{ item.desde | date: 'dd/MM/yyyy' }}</dd></div>
+              <div>
+                <dt>{{ etiquetaFecha }}</dt>
+                <dd [class.cc-vencido-texto]="vencido(item)">{{ item.fecha_ref ? (item.fecha_ref | date: 'dd/MM/yyyy') : '—' }}</dd>
+              </div>
+            </dl>
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="cc-vacio">{{ textoVacio }}</p>
+    }
+  </div>
+</section>

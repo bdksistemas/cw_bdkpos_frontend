@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewEncapsulation, signal } from '@angular/core';
+import { AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewEncapsulation, computed, signal } from '@angular/core';
 import { ApiServiceService } from '../../services/api-service.service';
 import { sucursalInicial } from '../../auth/auth.service';
 import { alCambiarSucursal } from '../../services/sucursal.service';
@@ -6,7 +6,7 @@ import {
   Dashboard,
   DatosIniciales,
   SerieVenta,
-  Top10clientesAdeudo,
+  CuentasClientes,
   TopProducto,
   VentasPorCategoria,
 } from '../../interfaces/Dashboard';
@@ -37,7 +37,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   serieVentas$ = signal<SerieVenta[]>([]);
   ventasCategoria$ = signal<VentasPorCategoria[]>([]);
   top10ProductsData$ = signal<TopProducto[]>([]);
-  top10ClientesAdeudo$ = signal<Top10clientesAdeudo[]>([]);
+  // Datos de las gráficas de dona (etiqueta + valor).
+  categoriasDona = computed(() =>
+    this.ventasCategoria$().map((i) => ({ label: i.nomcategoria, valor: i.total_productos_vendido })),
+  );
+  productosDona = computed(() =>
+    this.top10ProductsData$().map((i) => ({ label: i.nomproducto, valor: i.total_producto_vendido })),
+  );
+  adeudos$ = signal<CuentasClientes>({ clientes: [], total: 0 });
+  apartados$ = signal<CuentasClientes>({ clientes: [], total: 0 });
 
   constructor(private apiService: ApiServiceService, private zone: NgZone) {}
 
@@ -111,7 +119,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       this.serieVentas$.set(res.serieVentas);
       this.ventasCategoria$.set(res.ventasPorCategorias);
       this.top10ProductsData$.set(res.topProductos);
-      this.top10ClientesAdeudo$.set(res.top10clientesAdeudo);
+      this.adeudos$.set(res.adeudos);
+      this.apartados$.set(res.apartados);
     });
   }
 
@@ -119,16 +128,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   processSerieVentas = (data: SerieVenta[]) => ({
     labels: data.map((item) => `${this.etiquetaSerie(item.etiqueta)}: ${this.moneda(item.total)}`),
     data: data.map((item) => item.total),
-  });
-
-  processCategorySalesData = (data: VentasPorCategoria[]) => ({
-    labels: data.map((item) => `${item.nomcategoria} (${item.total_ventas})`),
-    data: data.map((item) => item.total_productos_vendido),
-  });
-
-  processSalesTop10Data = (data: TopProducto[]) => ({
-    labels: data.map((item) => `${item.nomproducto} (${item.total_producto_vendido})`),
-    data: data.map((item) => item.total_producto_vendido),
   });
 
   private moneda(valor: number) {

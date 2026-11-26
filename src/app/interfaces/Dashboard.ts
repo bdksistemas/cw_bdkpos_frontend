@@ -1,16 +1,21 @@
+import { ClienteConSaldo } from '../shared/cuentas-clientes/cuentas-clientes.component';
+
 export interface Dashboard {
   datosIniciales:      DatosIniciales;
   agrupacionVentas:    'hora' | 'dia' | 'mes';
   serieVentas:         SerieVenta[];
   ventasPorCategorias: VentasPorCategoria[];
   topProductos:        TopProducto[];
-  top10clientesAdeudo: Top10clientesAdeudo[];
+  adeudos:             CuentasClientes;
+  apartados:           CuentasClientes;
 }
 
 export interface DatosIniciales {
   totalVentas:    number;
   gastosYCompras: number;
   ingresos:       number;
+  saldoCredito:   number;
+  saldoApartados: number;
   cotizaciones:   number;
 }
 
@@ -33,8 +38,8 @@ export interface VentasPorCategoria {
   total_productos_vendido: number;
 }
 
-export interface Top10clientesAdeudo {
-  cliente:     number;
-  nomcliente:  string;
-  total_saldo: number;
+// Clientes con saldo pendiente (los primeros) y cuántos hay en total.
+export interface CuentasClientes {
+  clientes: ClienteConSaldo[];
+  total:    number;
 }

@@ -139,5 +139,7 @@
 .daterangepicker .drp-buttons .btn-success:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
 
 
-/* ---------- Cuentas abiertas: una tarjeta por cuenta ---------- */
-.cuentas-vacio { margin: 0; color: var(--muted); font-size: 14px; }
+/* La gráfica de ventas ahora va sola en su fila: ocupa todo el ancho y sin el margen propio de su tarjeta. */
+.container-charts > generic-graph { flex: 1 1 100%; min-width: 0; display: block; }
+.container-charts generic-graph .card { margin: 0 !important; }
+
