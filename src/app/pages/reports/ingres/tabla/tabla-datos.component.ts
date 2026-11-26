@@ -37,7 +37,6 @@ export class TablaDatosComponent {
     'NombreCliente',
     'Importe',
     'Descuento',
-    // 'ISR',
     'Abonado',
     'Saldo',
     'UltimoPago',
