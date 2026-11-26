@@ -54,7 +54,7 @@
       <ng-container matColumnDef="NombreCategoria">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre de Categoría</th>
         <td mat-cell *matCellDef="let row"> {{ row.NombreCategoria }} </td>
-        <td mat-footer-cell *matFooterCellDef> </td>
+        <td mat-footer-cell *matFooterCellDef>Totales</td>
       </ng-container>
 
       <ng-container matColumnDef="NombreProducto">
@@ -90,7 +90,7 @@
       <ng-container matColumnDef="Existencia">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Existencia</th>
         <td mat-cell *matCellDef="let row"   [ngClass]="{'negative': row.Existencia < 0}"> {{ row.Existencia }} </td>
-        <td mat-footer-cell *matFooterCellDef> </td>
+        <td mat-footer-cell *matFooterCellDef>{{ getTotalCost('Existencia') | number:'1.0-3' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="Importe">

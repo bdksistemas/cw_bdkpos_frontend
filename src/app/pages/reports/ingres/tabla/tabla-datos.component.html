@@ -74,7 +74,7 @@
       <ng-container matColumnDef="Ticket">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-5 "> Ticket </th>
         <td mat-cell *matCellDef="let row"> {{row.Ticket}} </td>
-        <td mat-footer-cell *matFooterCellDef>  </td>
+        <td mat-footer-cell *matFooterCellDef>Totales</td>
 
       </ng-container>
 
@@ -99,13 +99,13 @@
       <ng-container matColumnDef="Importe">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Importe </th>
         <td mat-cell *matCellDef="let row"> {{row.Importe | currency }} </td>
-        <td mat-footer-cell *matFooterCellDef>  </td>
+        <td mat-footer-cell *matFooterCellDef>{{ getTotalCost('Importe') | currency }}</td>
 
       </ng-container>
       <ng-container matColumnDef="Descuento">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Descuento </th>
         <td mat-cell *matCellDef="let row"> {{row.Descuento | currency }} </td>
-        <td mat-footer-cell *matFooterCellDef>  </td>
+        <td mat-footer-cell *matFooterCellDef>{{ getTotalCost('Descuento') | currency }}</td>
       </ng-container>
 
       <ng-container matColumnDef="ISR">
@@ -121,12 +121,12 @@
       <ng-container matColumnDef="Abonado">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Abonado </th>
         <td mat-cell *matCellDef="let row"> {{row.Abonado | currency }} </td>
-        <td mat-footer-cell *matFooterCellDef>  </td>
+        <td mat-footer-cell *matFooterCellDef>{{ getTotalCost('Abonado') | currency }}</td>
       </ng-container>
       <ng-container matColumnDef="Saldo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo </th>
         <td mat-cell *matCellDef="let row"> {{row.saldo | currency }} </td>
-        <td mat-footer-cell *matFooterCellDef>  </td>
+        <td mat-footer-cell *matFooterCellDef>{{ getTotalCost('saldo') | currency }}</td>
       </ng-container>
       <ng-container matColumnDef="UltimoPago">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> UltimoPago </th>
