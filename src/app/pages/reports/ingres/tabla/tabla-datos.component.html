@@ -9,16 +9,6 @@
         <input matInput (keyup)="applyFilter($event.target)" placeholder="Buscar datos:">
       </mat-form-field>
 
-      <div class="">
-        <button (click)="downloadPDF()" mat-raised-button class="botones-acciones rojo" >
-          PDF <i class="fas fa-download ml-3"></i>
-        </button>
-      </div>
-      <div class="">
-        <button (click)="downloadExcel()" mat-raised-button class="botones-acciones verde" [color]="verde">
-          EXCEL <i class="fas fa-download ml-3"></i>
-        </button>
-      </div>
 
       <div class="form-floating buscador-ticket">
         <select (change)="cambioCategoria($event)" class="form-select box-shadow-rojo borde-rojo" id="floatingSelect" aria-label="Floating label select example">
@@ -66,11 +56,17 @@
       </div> -->
     </div>
 
-      <div class="">
-        <button (click)="aplicarFiltros()" mat-raised-button class="botones-acciones rojo">
-          APLICAR FILTROS <i class="fas fa-filter ml-3"></i>
-        </button>
-      </div>
+    <div class="barra-acciones">
+      <button (click)="downloadPDF()" mat-raised-button class="botones-acciones rojo" >
+        PDF <i class="fas fa-download ml-3"></i>
+      </button>
+      <button (click)="downloadExcel()" mat-raised-button class="botones-acciones verde" [color]="verde">
+        EXCEL <i class="fas fa-download ml-3"></i>
+      </button>
+      <button (click)="aplicarFiltros()" mat-raised-button class="botones-acciones rojo">
+        APLICAR FILTROS <i class="fas fa-filter ml-3"></i>
+      </button>
+    </div>
     <table id="my-table" mat-table [dataSource]="dataSource" matSort >
 
       <!-- DEFINIMOS LAS SOLUMNAS DE d -->

@@ -10,16 +10,6 @@
         <input matInput (keyup)="applyFilter($event.target)" placeholder="Buscar:">
       </mat-form-field>
 
-      <div class="">
-        <button (click)="downloadPDF()" mat-raised-button class="botones-acciones rojo" >
-          PDF <i class="fas fa-download ml-3"></i>
-        </button>
-      </div>
-      <div class="">
-        <button (click)="downloadExcel()" mat-raised-button class="botones-acciones verde" [color]="verde">
-          EXCEL <i class="fas fa-download ml-3"></i>
-        </button>
-      </div>
 
 
 
@@ -41,11 +31,17 @@
 
 
     </div>
-      <div class="">
-        <button (click)="aplicarFiltros()" mat-raised-button class="botones-acciones rojo">
-          APLICAR FILTROS <i class="fas fa-filter ml-3"></i>
-        </button>
-      </div>
+    <div class="barra-acciones">
+      <button (click)="downloadPDF()" mat-raised-button class="botones-acciones rojo" >
+        PDF <i class="fas fa-download ml-3"></i>
+      </button>
+      <button (click)="downloadExcel()" mat-raised-button class="botones-acciones verde" [color]="verde">
+        EXCEL <i class="fas fa-download ml-3"></i>
+      </button>
+      <button (click)="aplicarFiltros()" mat-raised-button class="botones-acciones rojo">
+        APLICAR FILTROS <i class="fas fa-filter ml-3"></i>
+      </button>
+    </div>
     <table id="my-table" mat-table [dataSource]="dataSource" matSort >
 
       <ng-container matColumnDef="IDEntrada">
